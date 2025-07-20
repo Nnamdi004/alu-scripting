@@ -5,7 +5,7 @@ import requests
 
 
 def top_ten(subreddit):
-    """DOCS"""
+    """Docs"""
     if not isinstance(subreddit, str) or subreddit == "":
         print(None)
         return
