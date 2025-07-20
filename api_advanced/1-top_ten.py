@@ -1,18 +1,24 @@
 #!/usr/bin/python3
 """DOCS"""
+
 import requests
 
 
 def top_ten(subreddit):
-    """Docs"""
-    reddit_url = "https://www.reddit.com/r/{}/hot.json" \
-        .format(subreddit)
-    headers = headers = {'User-agent': 'Mozilla/5.0'}
-    response = requests.get(reddit_url, headers=headers)
+    """DOCS"""
+    if not isinstance(subreddit, str) or subreddit == "":
+        return
 
-    if response.status_code == 200:
-        data = response.json()['data']
-        for post in data['children'][:10]:
-            print(post['data']['title'])
-    else:
-        print(None)
+    url = f"https://www.reddit.com/r/{subreddit}/hot.json"
+    headers = {'User-Agent': 'api_advanced:v1.0 (by u/alu_student)'}
+    params = {'limit': 10}
+
+    try:
+        response = requests.get(
+            url, headers=headers, params=params, allow_redirects=False)
+        if response.status_code == 200:
+            posts = response.json().get('data', {}).get('children', [])
+            for post in posts:
+                print(post.get('data', {}).get('title'))
+    except requests.RequestException:
+        pass
