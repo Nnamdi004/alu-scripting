@@ -5,12 +5,13 @@ import requests
 
 def top_ten(subreddit):
     """Docs"""
-    reddit_url = "https://www.reddit.com/r/{}/hot.json".format(subreddit)
+    url = "https://www.reddit.com/r/{}/hot.json".format(subreddit)
     headers = {'User-agent': 'Mozilla/5.0'}
+    params = {'limit': 10}
+
     response = requests.get(
-        reddit_url, headers=headers, params={'limit': 10}, allow_redirects=False)
+        url, headers=headers, params=params, allow_redirects=False)
 
     if response.status_code == 200:
-        data = response.json()['data']
-        for post in data['children']:
-            print(post['data']['title'])
+        for post in response.json().get('data').get('children'):
+            print(post.get('data').get('title'))
